@@ -20,4 +20,4 @@ module Postmen
   end
 end
 
-Postmen::Carriers.register :FedEx,            'postmen/carriers/fedex'
+Postmen::Carriers.register :Fedex, 'postmen/carriers/fedex'
