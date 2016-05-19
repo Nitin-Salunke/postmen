@@ -15,27 +15,35 @@ module Postmen
     end
 
     def calculate_rates
+      raise NotImplementedError, "Method: calculate_rates is not supported by #{self.class.name}."
     end
 
     def retrieve_rates_by_id
+      raise NotImplementedError, "Method: retrieve_rates_by_id is not supported by #{self.class.name}."
     end
 
     def create_label
+      raise NotImplementedError, "Method: create_label is not supported by #{self.class.name}."
     end
 
     def retrieve_label_by_id
+      raise NotImplementedError, "Method: retrieve_label_by_id is not supported by #{self.class.name}."
     end
 
     def list_all_label
+      raise NotImplementedError, "Method: list_all_label is not supported by #{self.class.name}."
     end
 
     def cancel_label
+      raise NotImplementedError, "Method: cancel_label is not supported by #{self.class.name}."
     end
 
     def list_all_cancel_labels
+      raise NotImplementedError, "Method: list_all_cancel_labels is not supported by #{self.class.name}."
     end
 
     def retrieve_cancel_label_by_id
+      raise NotImplementedError, "Method: retrieve_cancel_label_by_id is not supported by #{self.class.name}."
     end
 
     private
