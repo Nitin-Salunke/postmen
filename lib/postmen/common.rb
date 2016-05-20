@@ -6,7 +6,13 @@ module Postmen
       instance_variables.map do |var|
         value = instance_variable_get(var)
         if instance_variable_get(var)
-          hash[var[1..-1].to_sym] = (value.class.to_s.include?('Postmen') ? instance_variable_get(var).to_hash : instance_variable_get(var))
+          hash[var[1..-1].to_sym] = if values.is_a?(Array)
+                                      value.collect{|val|
+                                        (val.class.to_s.include?('Postmen') ? val.to_hash : val)
+                                      }
+                                    else
+                                      (value.class.to_s.include?('Postmen') ? value.to_hash : value)
+                                    end
         end
       end
       hash
