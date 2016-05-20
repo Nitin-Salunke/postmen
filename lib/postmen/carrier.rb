@@ -7,6 +7,11 @@ module Postmen
     PRODUCTION = 'https://sandbox-api.postmen.com/v3'
     SANDBOX = 'https://production-api.postmen.com/v3'
 
+    attr_reader :api_key,
+                :mode,
+                :api_url,
+                :async
+
     def initialize(options)
       @api_key = options[:api_key]
       @mode = options[:mode]
@@ -23,7 +28,7 @@ module Postmen
     end
 
     def create_label
-      raise NotImplementedError, "Method: create_label is not supported by #{self.class.name}."
+
     end
 
     def retrieve_label_by_id
