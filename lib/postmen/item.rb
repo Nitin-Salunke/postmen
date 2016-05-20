@@ -1,9 +1,19 @@
 module Postmen
   class Item
+    include Postmen::Common
+
+    attr_reader :description,
+                :quantity,
+                :price,
+                :weight,
+                :item_id,
+                :origin_country,
+                :sku,
+                :hs_code
 
     def initialize(options)
       @description = options[:description]
-      @quantity = options[:price]
+      @quantity = options[:quantity]
       @price = options[:price]
       @weight = options[:weight]
       @item_id = options[:item_id]
@@ -11,5 +21,6 @@ module Postmen
       @sku = options[:sku]
       @hs_code = options[:hs_code]
     end
+
   end
 end

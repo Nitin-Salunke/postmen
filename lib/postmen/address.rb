@@ -1,5 +1,6 @@
 module Postmen
-  class Address < Common
+  class Address
+    include Postmen::Common
 
     attr_reader :country,
                 :contact_name,
