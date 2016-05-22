@@ -10,13 +10,17 @@ module Postmen
     attr_reader :api_key,
                 :mode,
                 :api_url,
-                :async
+                :async,
+                :is_document,
+                :shipper_account_id #Array of multiple shipper account id's
 
     def initialize(options)
       @api_key = options[:api_key]
       @mode = options[:mode]
       @api_url = get_api_url(options[:mode])
       @async = options[:async]
+      @is_document = options[:is_document]
+      @shipper_account_id = options[:shipper_account_id]
     end
 
     def calculate_rates
@@ -27,8 +31,20 @@ module Postmen
       raise NotImplementedError, "Method: retrieve_rates_by_id is not supported by #{self.class.name}."
     end
 
-    def create_label
-
+    def create_label(base, invoice, messages, billing, shipment, parcels, customs = nil)
+      request_body = {
+          async: self.async,
+          is_document: self.is_document
+      }
+      request_body.merge!(base.to_hash)
+      request_body.merge!(invoice: invoice.to_hash)
+      request_body.merge!(references: messages) #Reference messages for shipment.
+      request_body.merge!(shipper_account: {id: self.shipper_account_id.first})
+      request_body.merge!(billing: billing.to_hash)
+      request_body.merge!(shipment: shipment.to_hash)
+      request_body.merge!(format_hash_for_array('parcels', parcels))
+      request_body.merge!(customs: customs.to_hash) if customs.present?
+      process_request("#{url}/labels", 'POST', request_body)
     end
 
     def retrieve_label_by_id
@@ -63,13 +79,22 @@ module Postmen
       end
     end
 
+    def format_hash_for_array(key, values)
+      array_values = values.collect{|value| value.to_hash}
+      {"#{key}": array_values}
+    end
 
-    def process_request(url, body = nil)
+
+    def process_request(url, method, body = nil)
       url = URI(url)
       http = Net::HTTP.new(url.host, url.port)
       http.use_ssl = true
-
-      request = Net::HTTP::Get.new(url)
+      request = case method
+                  when 'GET'
+                    Net::HTTP::Get.new(url)
+                  when 'POST'
+                    Net::HTTP::Post.new(url)
+                end
       request['postmen-api-key'] = '8fc7966b-679b-4a57-911d-c5a663229c9e'
       request['content-type'] = 'application/json'
       request.body = body if body.present?

@@ -1,8 +1,7 @@
 module Postmen
   class Fedex < Carrier
 
-    attr_reader :billing_account_number,
-                :is_document
+    attr_reader :billing_account_number
 
     BILLING = {
         :paid_by => %W(shipper recipient third_party)
@@ -11,7 +10,6 @@ module Postmen
     def initialize(options)
       super
       @billing_account_number = options[:billing_account_number]
-      @is_document = options[:is_document]
     end
 
     def calculate_rates
