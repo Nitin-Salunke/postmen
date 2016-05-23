@@ -44,6 +44,7 @@ module Postmen
       request_body.merge!(shipment: shipment.to_hash)
       request_body.merge!(format_hash_for_array('parcels', parcels))
       request_body.merge!(customs: customs.to_hash) if customs.present?
+      puts "Request body: #{request_body}"
       process_request("#{url}/labels", 'POST', request_body)
     end
 
