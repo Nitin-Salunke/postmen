@@ -31,7 +31,7 @@ module Postmen
       raise NotImplementedError, "Method: retrieve_rates_by_id is not supported by #{self.class.name}."
     end
 
-    def create_label(base, invoice, messages, billing, shipment, parcels, customs = nil)
+    def create_label(base, invoice, messages, billing, shipment, customs = nil)
       request_body = {
           async: self.async,
           is_document: self.is_document
@@ -42,7 +42,6 @@ module Postmen
       request_body.merge!(shipper_account: {id: self.shipper_account_id.first})
       request_body.merge!(billing: billing.to_hash)
       request_body.merge!(shipment: shipment.to_hash)
-      request_body.merge!(format_hash_for_array('parcels', parcels))
       request_body.merge!(customs: customs.to_hash) if customs.present?
       puts "Request body: #{request_body}"
       process_request("#{url}/labels", 'POST', request_body)
@@ -78,11 +77,6 @@ module Postmen
         else
           ''
       end
-    end
-
-    def format_hash_for_array(key, values)
-      array_values = values.collect{|value| value.to_hash}
-      {"#{key}": array_values}
     end
 
 

@@ -6,6 +6,10 @@ module Postmen
     BILLING = {
         :paid_by => %W(shipper recipient third_party)
     }
+    
+    PARCEL ={
+        :box_type => %w(custom fedex_10kg_box fedex_25kg_box fedex_box fedex_envelope fedex_extra_large_box fedex_large_box fedex_medium_box fedex_pak fedex_small_box fedex_tube)
+    }
 
     def initialize(options)
       super
@@ -13,11 +17,11 @@ module Postmen
     end
 
     def calculate_rates
-      raise NotImplementedError, "Method: calculate_rates is not supported by #{self.class.name}."
+      raise NotImplementedError  "Method: calculate_rates is not supported by #{self.class.name}."
     end
 
     def retrieve_rates_by_id
-      raise NotImplementedError, "Method: retrieve_rates_by_id is not supported by #{self.class.name}."
+      raise NotImplementedError  "Method: retrieve_rates_by_id is not supported by #{self.class.name}."
     end
 
   end
