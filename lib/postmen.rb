@@ -1,4 +1,5 @@
 require 'postmen/version'
+require 'json'
 
 # Require postmen modules
 require 'postmen/carrier'

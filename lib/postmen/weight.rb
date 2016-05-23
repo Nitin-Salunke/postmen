@@ -6,7 +6,7 @@ module Postmen
                 :unit
 
     def initialize(options)
-      @value = options[:value],
+      @value = options[:value]
       @unit = options[:unit]
     end
   end

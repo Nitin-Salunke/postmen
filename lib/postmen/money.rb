@@ -6,7 +6,7 @@ module Postmen
                 :currency
 
     def initialize(options)
-      @amount = options[:amount],
+      @amount = options[:amount]
       @currency = options[:currency]
     end
   end

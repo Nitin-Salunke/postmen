@@ -4,8 +4,8 @@ require 'net/http'
 module Postmen
   class Carrier
 
-    PRODUCTION = 'https://sandbox-api.postmen.com/v3'
-    SANDBOX = 'https://production-api.postmen.com/v3'
+     SANDBOX = 'https://sandbox-api.postmen.com/v3'
+     PRODUCTION = 'https://production-api.postmen.com/v3'
 
     attr_reader :api_key,
                 :mode,
@@ -43,8 +43,7 @@ module Postmen
       request_body.merge!(billing: billing.to_hash)
       request_body.merge!(shipment: shipment.to_hash)
       request_body.merge!(customs: customs.to_hash) if customs
-      puts "Request body: #{request_body}"
-      process_request("#{url}/labels", 'POST', request_body)
+      process_request("#{api_url}/labels", 'POST', request_body)
     end
 
     def retrieve_label_by_id
@@ -90,11 +89,11 @@ module Postmen
                   when 'POST'
                     Net::HTTP::Post.new(url)
                 end
-      request['postmen-api-key'] = '8fc7966b-679b-4a57-911d-c5a663229c9e'
+      request['postmen-api-key'] = api_key
       request['content-type'] = 'application/json'
-      request.body = body if body.present?
-
-      http.request(request)
+      request.body = body.to_json if body
+      response = http.request(request)
+      JSON.parse(response.body)
     end
   end
 end
