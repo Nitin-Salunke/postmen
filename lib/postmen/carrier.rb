@@ -42,7 +42,7 @@ module Postmen
       request_body.merge!(shipper_account: {id: self.shipper_account_id.first})
       request_body.merge!(billing: billing.to_hash)
       request_body.merge!(shipment: shipment.to_hash)
-      request_body.merge!(customs: customs.to_hash) if customs.present?
+      request_body.merge!(customs: customs.to_hash) if customs
       puts "Request body: #{request_body}"
       process_request("#{url}/labels", 'POST', request_body)
     end
