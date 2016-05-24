@@ -16,10 +16,6 @@ module Postmen
       @billing_account_number = options[:billing_account_number]
     end
 
-    def calculate_rates
-      raise NotImplementedError  "Method: calculate_rates is not supported by #{self.class.name}."
-    end
-
     def retrieve_rates_by_id
       raise NotImplementedError  "Method: retrieve_rates_by_id is not supported by #{self.class.name}."
     end

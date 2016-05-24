@@ -12,7 +12,7 @@ module Postmen
                 :api_url,
                 :async,
                 :is_document,
-                :shipper_account_id #Array of multiple shipper account id's
+                :shipper_account_ids #Array of multiple shipper account id's
 
     def initialize(options)
       @api_key = options[:api_key]
@@ -20,11 +20,21 @@ module Postmen
       @api_url = get_api_url(options[:mode])
       @async = options[:async]
       @is_document = options[:is_document]
-      @shipper_account_id = options[:shipper_account_id]
+      @shipper_account_ids = options[:shipper_account_ids]
     end
 
-    def calculate_rates
-      raise NotImplementedError, "Method: calculate_rates is not supported by #{self.class.name}."
+    def calculate_rates(shipment)
+      request_body = {
+          async: self.async,
+          is_document: self.is_document
+      }
+      shipper_accounts = []
+      self.shipper_account_ids.each do |account|
+        shipper_accounts << {id: account}
+      end
+      request_body.merge!(shipper_accounts: shipper_accounts)
+      request_body.merge!(shipment: shipment.to_hash)
+      process_request("#{api_url}/rates", 'POST', request_body)
     end
 
     def retrieve_rates_by_id
@@ -39,7 +49,7 @@ module Postmen
       request_body.merge!(base.to_hash)
       request_body.merge!(invoice: invoice.to_hash)
       request_body.merge!(references: messages) #Reference messages for shipment.
-      request_body.merge!(shipper_account: {id: self.shipper_account_id.first})
+      request_body.merge!(shipper_account: {id: self.shipper_account_ids.first})
       request_body.merge!(billing: billing.to_hash)
       request_body.merge!(shipment: shipment.to_hash)
       request_body.merge!(customs: customs.to_hash) if customs
